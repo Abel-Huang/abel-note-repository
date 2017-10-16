@@ -3,3 +3,4 @@
 *.html linguist-language=md
 *.java linguist-language=md
 *.xml linguist-language=md
+*.md linguist-language=md
