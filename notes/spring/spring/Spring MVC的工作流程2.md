@@ -1,0 +1,59 @@
+## Spring MVC的工作流程
+Spring MVC是一个MVC框架，使用时需要在web.xml中配置一个DispatcherServlet然后配置一个dispatcherServlet-Servlet.xml配置文件即可。
+使用时只需要再扩展一个路径映射关系，定义一个视图解析器，在定义一个业务逻辑的处理流程规则就能完成所有的MVC功能。
+### DispatcherServlet
+Spring MVC的工作流程主要看DispatcherServlet。
+DispatcherServlet类继承了HttpServlet，在Servlet的init方法调用时DispatcherServlet执行Spring MVC的初始化工作，具体的初始化是在DispatcherServlet的initStrategies()进行初始化。initStrategies()调用了八个方法，
+* initMultipartResolver:初始化MultipartResolver，用于处理文件上传服务
+* initLocaleResolver:用于处理应用的国际化问题，通过解析请求的Locale和设置响应的Locale来控制应用的字符编码问题
+* initThemeResolver:用于定义一个主题
+* initHandlerMappings:用于定义用户设置的请求映射关系
+* initHandlerAdapters:用于根据Handler的类型定义不同的处理规则
+* initHanderExceptionResolvers：当Handler处理出错时，会通过这个Handler来统一处理，默认的实现类是SimpleMappingsExceptionResolver，将错误日志记录在文件中，并且转到默认的错误页面
+* initRequestToViewNameTranslator：将指定的ViewName按照定义的RequestToViewNameTranslator替换成想要的格式
+如加上前缀或者后缀等
+* initViewResolvers:用于将View解析成页面，在ViewResolvers中可以设置多个解析策略，如JSP解析，Velocity模板解析，默认是InternalResourceViewResolver,按照JSP页面来解析。
+可以根据需求在这个初始化方法里面进行Spring MVC的扩展。
+其中最核心的三个组件是：
+定义URL映射规则，实现业务逻辑的Handler实例对象，渲染模板对象。
+Spring容器的创建是在FrameworkServlet中的initServletBean()方法中完成的，在initStrategies方法会初始化Spring MVC框架需要的8个组件，对应的8个Bean对象都保存在DispatcherServlet类中。
+
+### Control
+Spring MVC的Control主要由HandlerMapping和HandlerAdapters两个组件提供，HandlerMapping负责映射用户的URL和对应的处理类，HandlerMapping定义了根据一个URL必须返回一个由HandlerExecutionChain代表的处理链，在这个处理链中可以添加HandlerAdapters实例来处理这个URL对应的请求。
+1. HandlerMapping初始化
+
+### 工作流程
+
+1、用户发送请求至前端控制器DispatcherServlet 
+2、DispatcherServlet收到请求调用HandlerMapping处理器映射器。 
+3、处理器映射器根据请求url找到具体的处理器，生成处理器对象及处理器拦截器(二者组成HandlerExecutionChain),并将其一并返回给DispatcherServlet。 
+4、DispatcherServlet通过HandlerAdapter处理器适配器调用处理器 
+5、执行处理器(Controller，也叫后端控制器)。 
+6、Controller执行完成返回ModelAndView 
+7、HandlerAdapter将controller执行结果ModelAndView返回给DispatcherServlet 
+8、DispatcherServlet将ModelAndView传给ViewReslover视图解析器 
+9、ViewReslover解析后返回具体View 
+10、DispatcherServlet对View进行渲染视图（即将模型数据填充至视图中）。 
+11、DispatcherServlet对用户进行响应
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
