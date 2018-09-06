@@ -1,5 +1,5 @@
-*.js linguist-language=md
-*.css linguist-language=md
-*.html linguist-language=md
-*.java linguist-language=md
-*.xml linguist-language=md
+*.js linguist-language=Java
+*.css linguist-language=Java
+*.html linguist-language=Java
+*.java linguist-language=Java
+*.xml linguist-language=Java
