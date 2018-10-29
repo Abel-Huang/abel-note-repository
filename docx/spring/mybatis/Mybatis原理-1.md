@@ -1,5 +1,10 @@
 ## Mybatis原理-1
-Mybatis的核心组件
+### Mybatis 的整体架构
+mybatis 架构自上而下分为基础支持层，数据处理层，API接口层
+* 数据支持层： 主要用来做连接管理，事务管理，配置加载，缓存管理等基础组件，为上层提供最初的支撑；
+* 数据处理层： 主要用来做参数映射，sql解析，sql执行，结果映射等处理，可以理解为请求到达，完成一次
+数据库操作的流程；
+* API 接口层：主要是对外提供 API，如数据的增删改查、获取配置等接口。
 ### Mybatis的核心组件
 * SqlSessionFactoryBuilder(构造器)：它会根据配置或者代码来生成SqlSessionFactory，采用的是Builder模式
 * SqlSessionFactory(工厂接口):用于生成SqlSession，使用工厂模式

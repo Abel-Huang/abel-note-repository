@@ -73,17 +73,3 @@ Spring提供了两种方式让Spring Ioc容器发现Bean
 * 原型， prototype，每次注入或者获取Bean时，Spring Ioc都会为它创建一个新的实例
 * 会话， session，在Web中使用，每次会话，Spring Ioc都会为它创建一个新的实例
 * 请求， request，在Web中使用，每次请求Spring Ioc都会为它创建一个新的实例， 但是不同请求会创建不同的实例
-
-
-
-
-
-
-
-
-
-
-
-
-
-

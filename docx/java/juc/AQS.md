@@ -3,8 +3,11 @@ AbstractQueuedSynchronizer
 ### AQS的设计
 * 使用Node实现FIFO队列，可以用于构建锁或者其他同步装置的基础框架
 * 利用了一个int类型表示状态
+    * 使用 volatile 修饰的一个整形成员表征状态 state
+    * 同时提供了 setState() 和 getState() 方法
 * 使用方法时继承(AbstractQueuedSynchronizer本身是一个抽象类)
 * 子类通过继承并通过实现它的方法管理其状态{acquire 和 release}的方法操纵状态
+    * 基于 CAS 和其他的同步数据结构实现 acquire 和 release 方法
 * 可以同时实现排它锁和共享锁模式(独占、共享)
 
 ### AQS同步组件
@@ -20,10 +23,6 @@ CountDownLatch允许一个或多个线程等待其他线程完成操作。
 作用类似于join，CountDownLatch构造时需要输入一个int类型的参数作为计数器，每次调用
 countDown()方法时，N就会减一，CountDownLatch的await()就会阻塞当前线程，直到N减为0.
 
-### CyclicBarrier
-让一组线程到达一个同步点时被阻塞，直到最后一个线程达到屏障时，
-屏障才会打开，所有被屏障拦截的线程才会继续执行。
-
 ### Semaphore
 用来控制并发线程数, 例如用来限制连接池的最大连数
 acquire() 获取一个许可
@@ -31,6 +30,10 @@ acquire(int n) 获取多个许可
 try
 tryAcquire() 尝试获取一个许可
 tryAcquire(int n, TimeUnits) 尝试等待一定的时间来获取一个许可
+
+### CyclicBarrier
+让一组线程到达一个同步点时被阻塞，直到最后一个线程达到屏障时，
+屏障才会打开，所有被屏障拦截的线程才会继续执行。
 
 #### CountDownLatch和CyclicBarrier的区别
 1. CountDownLatch的计数器只能使用一次，CyclicBarrier的计数器可以使用多次
