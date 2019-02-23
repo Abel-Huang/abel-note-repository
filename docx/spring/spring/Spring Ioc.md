@@ -168,13 +168,3 @@ Spring提供了两种方式让Spring Ioc容器发现Bean
 Spring 的 Bean 并没有保证线程安全，需要自己去实现相关的功能。
 但是大多数情况下 Spring 的 Bean 是无状态的，所以是线程安全的。
 
-
-
-
-
-
-
-
-
-
-

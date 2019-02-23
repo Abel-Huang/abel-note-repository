@@ -8,6 +8,7 @@ AbstractQueuedSynchronizer
 * 子类通过继承并通过实现它的方法管理其状态{acquire 和 release}的方法操纵状态
 * 可以同时实现排它锁和共享锁模式(独占 Exclusive、共享 Share)
 
+
 ### AQS同步组件
 * CountDownLatch，通过计数判断线程是否需要一直阻塞；
 * Semaphore，控制同一时间并发线程的数目；
@@ -26,10 +27,6 @@ countDown()方法时，N就会减一，CountDownLatch的await()就会阻塞当�
 * 等到所有的子线程执行完之后(state = 0), 会 unpark() 调用线程，恢复；
 * 主线程就会从 await() 函数返回，继续剩余动作。
 
-### CyclicBarrier
-让一组线程到达一个同步点时被阻塞，直到最后一个线程达到屏障时，
-屏障才会打开，所有被屏障拦截的线程才会继续执行。
-
 ### Semaphore
 用来控制并发线程数, 例如用来限制连接池的最大连数。由于 Semaphore 适用于限制访问某些资源的线程数目，因此可以用来做限流。
 acquire() 获取一个许可
@@ -41,6 +38,10 @@ tryAcquire(int n, TimeUnits) 尝试等待一定的时间来获取一个许可
 ### Condition
 Condition 则是将 wait、notify、notifyAll 等操作转化为相应的对象方法，分别对应为 await(), signal(),
 signalAll()
+
+### CyclicBarrier
+让一组线程到达一个同步点时被阻塞，直到最后一个线程达到屏障时，
+屏障才会打开，所有被屏障拦截的线程才会继续执行。
 
 #### CountDownLatch和CyclicBarrier的区别
 1. CountDownLatch的计数器只能使用一次，CyclicBarrier的计数器可以使用多次
