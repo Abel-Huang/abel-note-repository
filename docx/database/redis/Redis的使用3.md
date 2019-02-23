@@ -77,8 +77,6 @@ aof_base_size AOF上次启动和重写的尺寸
 
 #### RDB和AOF的选择
 
-
-
 ### 常见问题
 ####  fork操作
 * 同步操作

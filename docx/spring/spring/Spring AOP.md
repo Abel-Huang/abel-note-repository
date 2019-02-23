@@ -1,6 +1,7 @@
-## Spring AOP
+# Spring AOP
 AOP可以认为是对面向独享编程的一个补充，通过横向切割的方式对代码进行抽象，可以将一些公共的操作从业务逻辑中抽取出来。
-### AOP术语
+
+## AOP术语
 1. 连接点(Joinpoint)
 指哪些目标类的方法可以被拦截
 
@@ -10,7 +11,9 @@ AOP可以认为是对面向独享编程的一个补充，通过横向切割的�
 3. 增强(Advice)或叫增强
 增强是织入目标类连接点上的一段程序代码，指在某个特定点的pointcut上需要执行的动作如
 日志记录、权限验证等具体要应用带切入点的代码
-    
+* Before Advice
+* After Advice
+* Around Advice   
 
 4. 目标对象(Target)
 增强逻辑的织入目标类。
@@ -32,16 +35,16 @@ Spring采用动态代理织入，而AspectJ采用编译期织入和类装载织�
 8. 切面(Aspect)
 切面是由切点和增强(引介)组成，既包括横切逻辑的定义，也包括连接点的定义。
 
-### AOP实现方式
+## AOP实现方式
 1. AspectJ
 AspectJ是语言级别的AOP实现，需要专门的编译器(ajc编译器)来生成。
 
 2. Spring AOP
 Spring AOP使用纯Java实现，不需要专门的编译过程，也不需要特殊的类装载器，它在运行期通过代理方式向目标类织入增强代码。Spring中可以无缝的将Spring AOP、Ioc和AspectJ整合在一起。
 
-### 基础知识
-Spring AOP提供了两种代理机制：JDK动态代理和CGLib动态代理
-#### JDK动态代理
+## 基础知识
+Spring AOP提供了两种代理机制：JDK 动态代理和 CGLib 字节码动态代理技术。Spring AOP 会优先使用 JDK 动态代理(性能会更高)，如果被代理类没有实现接口，就使用 CGLIB动态代理。
+### JDK动态代理
 Java提供了动态代理技术，允许开发者在运行期间创建接口的代理实例。主要使用的是 Proxy和InvocationHandler。其中
 InvocationHandler是一个接口，可以通过实现该接口定义横切逻辑，并通过反射机制调用目标类的代码，动态地将横切逻辑和业务逻辑编织在一起。
 Proxy利用InvocationHandler动态创建一个符合某一个接口的实例，生成目标类的代理对象。
@@ -65,27 +68,41 @@ invoke()方法可以实现代理逻辑方法，invoke()方法可以实现代理�
 * method， 当前调度的方法
 * args， 调度方法的参数
 
-#### CGLIB动态代理
+### CGLIB动态代理
 因为JDK动态代理只能在提供接口后才能使用，所以在没有提供接口的环境下，可以使用CGLIB动态代理，其优势在于不需要提供接口，只需要一个费抽象类就可以实现动态代理。
 CGLIB动态代理采用底层的字节码技术，通过继承的方式为一个类创建子类，在子类中采用方法拦截的技术拦截所有父类方法的调用并顺势织入横切逻辑。由于CGLIB采用动态创建子类的方式生成代理对象，所以不能对目标类中的final或者private方法进行代理。
 
-#### 两种代理方式的选择
-CGLib代理的性能比JDK动态代理高很多，但是所花费的时间同样也比JDK动态代理高很多。
+### 两种代理方式的选择
+CGLib代理的性能比JDK动态代理高很多(在 jdk6 以后，JDK 动态代理性能会更高)，但是所花费的时间同样也比JDK动态代理高很多。
 对于singleton的代理对象或者具有实例池的代理，因为无须频繁的创建代理对象，所以比较适合用CGLib代理反之则适合用
 JDK动态代理。
 
+## Spring AOP
+### Spring AOP 的织入
+使用类 ProxyFactory 作为织入器进行织入。
+
 ### Spring对AOP的支持
-
 Spring AOP是一种基于方法拦截的AOP，或者说Spring只能支持方法拦截的AOP。Spring提供了4种方法实现AOP的拦截功能：
-*    使用ProxyFactoryBean和对应的接口实现AOP
-*      使用XML配置AOP
-*     使用@AspectJ注解驱动切面
-*     使用AspectJ注入切面
+* 使用ProxyFactoryBean和对应的接口实现AOP
+* 使用XML配置AOP
+* 使用@AspectJ注解驱动切面
+* 使用AspectJ注入切面
 
-#### @AspectJ注解开发Spring AOP
+### @AspectJ注解开发Spring AOP
 
 
-#### 使用XML配置开发Spring AOP
+### 使用XML配置开发Spring AOP
+
+## AOP 的应用
+1. 异常处理
+
+2. 安全检查
+
+3. 缓存
+
+4. 日志
+
+5. 事务
 
 
 
