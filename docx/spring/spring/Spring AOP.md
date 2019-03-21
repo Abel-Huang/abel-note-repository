@@ -88,8 +88,12 @@ Spring AOP是一种基于方法拦截的AOP，或者说Spring只能支持方法�
 * 使用@AspectJ注解驱动切面
 * 使用AspectJ注入切面
 
-### @AspectJ注解开发Spring AOP
-
+### @AspectJ 注解开发 Spring AOP
+* before 目标方法执行前执行，前置通知
+* after 目标方法执行后执行，后置通知
+* after returning 目标方法返回时执行 ，后置返回通知
+* after throwing 目标方法抛出异常时执行 异常通知
+* around 在目标函数执行中执行，可控制目标函数是否执行，环绕通知
 
 ### 使用XML配置开发Spring AOP
 

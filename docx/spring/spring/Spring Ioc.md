@@ -14,8 +14,23 @@ Bean的初始化分为3步：
 
 ### Spring Bean的生命周期
 Spring Bean的创建和Bean的销毁都是由Spring Ioc容器管理的，这样一整个流程就是Spring Bean的生命周期。
+1. 读取 Bean 的配置信息;
+    * xml 配置文件
+    * Java 类@Configuration
+    * 注解 @Autowired
+2. 根据 Bean 注册表实例化 Bean(BeanFactory 中的 BeanDefinition map);
+3. 将 Bean 实例放在 Spring 容器(BeanFactory 或 ApplicationContext)中;
+4. 使用 Bean。
 
-### 依赖注入的三种方法
+### Spring IOC 支持的功能
+* 依赖注入
+* 依赖检查
+* 自动装配
+* 支持集合
+* 指定初始化方法和销毁方法
+* 支持回调方法
+
+### 依赖注入的四种方法
 从注入方法来看，Ioc可以分为三种类型：构造函数注入、Setter注入和接口注入。
 Spring主要是构造函数注入和Setter注，接口注入不推荐使用。
 
@@ -42,11 +57,35 @@ IoC Service Provider通过调用成员变量提供的setter函数将被依赖对
 3. 缺点
 侵入行太强，不推荐。
 
+#### 基于注解的方式
+例如 @Autowired 注解
+
 ## IoC 容器
 Spring 提供了两种容器类型 BeanFactory 和 ApplicationContext。
-1. BeanFactory，基础类型的容器接口，默认采用 lazy-load，只有需要访问某个 bean 时才会进行 bean 的初始化和依赖注入。启动速度快，需要资源少，功能也较少。
-2. ApplicationContext，继承自 BeanFactory 接口，是高级容器实现。提供了 BeanFactory 外更多高级的功能。默认会在容器启动后对所有的 bean 全部进行初始化和装配，需要更多的资源，初始化时间也会更久。
-
+1. BeanFactory，基础类型的容器接口，默认采用 lazy-load，只有需要访问某个 bean 时才会进行 bean 的初始化和依赖注入。启动速度快，需要资源少，功能也较少；
+    * 提供了 IOC 的配置机制
+    * 包含 Bean 的各种定义，便于实例化 Bean；
+    * 建立 Bean 之间的依赖关系；
+    * Bean 生命周期的控制。
+2. ApplicationContext，继承自 BeanFactory 接口，是高级容器实现。除了 BeanFactory，还继承了很多其他的接口，提供了 BeanFactory 外更多高级的功能。默认会在容器启动后对所有的 bean 全部进行初始化和装配，需要更多的资源，初始化时间也会更久；
+    * BeanFactory：能够管理和装配 Bean；
+    * ResourcePatternResolver：能够加载资源文件；
+    * MessageSource:能够实现国际化等功能；
+    * ApplicationEventPublisher：能够注册监视器，实现监听机制。
+3. BeanDefinition, 接口，定义了 Bean 的各种属性，包括 id，name，class 等等；
+4. BeanDefinitionRegistry，用于操作 BeanDefinition(会放在一个 ConcurrentHashMap 中)；
+5. BeanFactory 和 ApplicationContext 的比较：
+    * BeanFactory 是 Spring 框架的基础设施，面向 Spring；
+    * ApplicationContext 面向使用 Spring 框架的开发者。
+    
+### BeanFactory
+核心方法是 getBean()，其代码逻辑为：
+    * 转换 beanName()；
+    * 从缓存中加载实例；
+    * 实例化 Bean；
+    * 检测 parentBeanFactory
+    * 初始化依赖的 Bean。
+    
 ### 总结
 装配可以分为两个阶段，分别是容器启动阶段和 Bean 实例化阶段。
 1. 容器启动
@@ -158,10 +197,11 @@ Spring提供了两种方式让Spring Ioc容器发现Bean
 ## Spring Bean的作用域
 * 单例，singleton， 默认选项，在整个应用中，Spring只生成一个Bean实例，生命周期与 Ioc 容器的生命周期相同。
 需要注意的是，与 GOF 设计模式中 singleton 的区别，前者是整个 IoC 容器中只有一个实例，而后者是同一个 ClassLoader
-中只有一个实例。
-* 原型，prototype，每次注入或者获取Bean时，Spring Ioc都会为它创建一个新的实例
-* 会话，session，在Web中使用，每次会话，Spring Ioc都会为它创建一个新的实例
-* 请求，request，在Web中使用，每次请求Spring Ioc都会为它创建一个新的实例， 但是不同请求会创建不同的实例
+中只有一个实例；
+* 原型，prototype，每次注入或者获取Bean时(getBean())，Spring Ioc都会为它创建一个新的实例；
+* 会话，session，在Web中使用，每次会话，Spring Ioc都会为它创建一个新的实例；
+* 请求，request，在Web中使用，每次请求Spring Ioc都会为它创建一个新的实例， 但是不同请求会创建不同的实例；
+* 全局会话，globalSession，在Web中使用，仅对 Portlet 有效；
 * 自定义 scope
 
 ### Spring Bean 的线程安全性问题
